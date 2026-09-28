@@ -2,7 +2,7 @@ name: MCC PG Notification Monitor
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
