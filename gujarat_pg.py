@@ -16,8 +16,30 @@ def get_updates():
         "User-Agent": "Mozilla/5.0"
     }
 
-    response = requests.get(URL, headers=headers, timeout=30)
-    response.raise_for_status()
+    for attempt in range(3):
+        try:
+            response = requests.get(URL, headers=headers, timeout=30)
+
+            if response.status_code in (502, 503, 504):
+                print(f"Gujarat portal returned HTTP {response.status_code} (attempt {attempt + 1}/3)")
+                if attempt < 2:
+                    import time
+                    time.sleep(5 * (attempt + 1))
+                    continue
+                print("Gujarat portal unavailable after 3 attempts. Skipping this check.")
+                return []
+
+            response.raise_for_status()
+            break
+
+        except requests.RequestException as e:
+            print(f"Gujarat portal request failed (attempt {attempt + 1}/3): {e}")
+            if attempt < 2:
+                import time
+                time.sleep(5 * (attempt + 1))
+                continue
+            print("Gujarat portal unavailable after 3 attempts. Skipping this check.")
+            return []
 
     soup = BeautifulSoup(response.text, "html.parser")
 
