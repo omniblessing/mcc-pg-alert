@@ -1,62 +1,70 @@
-[
-  {
-    "text": "Process of Online admission",
-    "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/Process of Online Admission - PG.pdf?v=2"
-  },
-  {
-    "text": "List of Help Centers",
-    "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/LIST OF HELP CENTER.pdf?v=2"
-  },
-  {
-    "text": "Instruction for NRI Candidates",
-    "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/Instructions for NRI Candidates 2026-27.pdf?v=2"
-  },
-  {
-    "text": "Authority Letter",
-    "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/Authority Letter.pdf?v=2"
-  },
-  {
-    "text": "Eligibility Criteria and list of Documents Required for Admission process of ACPPGMEC",
-    "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/Eligibility Criteria & List of Documents Required for Admission Process of ACPUGMEC 2026-27.pdf?v=2"
-  },
-  {
-    "text": "Click Here For Instruction For Candidate whose MBBS/FMGE AGGREGATE PERCENTAGE HAS BEEN USED FOR THE PURPOSE OF TIE BREAKING (The aggregate marks (in percentage) in all MBBS Professional Examinations/marks obtained in FMGE as provided by the candidate in his/her NEET-PG application form to be verified against the original credentials at the time of admission by the counseling/admitting Score authority. Score Cards issued to candidates have a mention of the MBBS/FMGE Aggregate marks as provided by the candidates the in their application form wherever such aggregate marks have been used to break the tie of NEET-PG 2026 Rank.)",
-    "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/PG Website.pdf"
-  },
-  {
-    "text": "Civil Hospital List for PwD",
-    "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/List of Civil Hospital for PwD 2026-27.pdf"
-  },
-  {
-    "text": "Letter no: HFWD/0133/07/2024 dated 09/07/2024 Resolution of Disability from Department of Health and Family Welfare, Government of Gujarat [આરોગ્ય અને પરિવાર કલ્યાણ વિભાગ, ગુજરાત સરકાર તરફથી પત્ર નંબર: HFWD/0133/07/2024 તારીખ 09/07/2024 દિવ્યાંગતાનો ઠરાવ]",
-    "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/PwD GR  Gujarat  09072024.pdf"
-  },
-  {
-    "text": "Proforma of disability [દિવ્યાંગતાનું પ્રોફોર્મા]",
-    "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/ProformaMedical & Appeal  Board_Case Paper.pdf"
-  },
-  {
-    "text": "• GUIDELINES ON ASSESSMENT OF PERSONS WITH BENCHMARK DISABILITIES (PWBD) FOR ADMISSION TO THE POST GRADUATE MEDICAL COURSE, 2026. Dated 16/09/2026",
-    "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/GUIDELINES ON ASSESSMENT OF PERSONS WITH BENCHMARK DISABILITIES.pdf"
-  },
-  {
-    "text": "Result of NEET-PG 2026 Declared",
-    "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/NBEMS_2026619243078.PDF"
-  },
-  {
-    "text": "16/09/2026 - Guidelines on Assessment of Persons with benchmark Disabilities (PwBD) for admission to the Post Graduate Medical Course, 2026.",
-    "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/20260917090022-pg-final-rpwd-guidleines-compressed.PDF"
-  },
-  {
-    "text": "Eligibility Criteria & List of Documents Required for Admission Process of ACPUGMEC 2026-27",
-    "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/Eligibility Criteria & List of Documents Required for Admission Process of ACPUGMEC 2026-27.PDF"
-  },
-  {
-    "text": "Instructions for NRI Candidates 2026-27",
-    "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/Instructions for NRI Candidates 2026-27.PDF"
-  },
-  {
-    "text": "Click Here PG Rules 201819",
-    "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/PG_Rules_201819.PDF"
-  }
-]
+{
+  "updates": [
+    {
+      "text": "Process of Online admission",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/Process of Online Admission - PG.pdf?v=2",
+      "content_hash": "48d2d74a0296137b73a6af3f6e3a64f7516481c5afe430f5094fb7979f014b65"
+    },
+    {
+      "text": "List of Help Centers",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/LIST OF HELP CENTER.pdf?v=2",
+      "content_hash": "e4c89e52b918aec24a084e366cb2d48ec62e6db45cce81d8d12164ec0df5899d"
+    },
+    {
+      "text": "Instruction for NRI Candidates",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/Instructions for NRI Candidates 2026-27.pdf?v=2",
+      "content_hash": "1e6fd8257353e35d4d2e1c80c44faab99a95b799dbcca6a5051f0ff0395ce8db"
+    },
+    {
+      "text": "Authority Letter",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/Authority Letter.pdf?v=2",
+      "content_hash": "9fc5af08fe9c480b5938cfe4070f196ab2397fff782f5b50b376f721f81c5daf"
+    },
+    {
+      "text": "Eligibility Criteria and list of Documents Required for Admission process of ACPPGMEC",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/Eligibility Criteria & List of Documents Required for Admission Process of ACPUGMEC 2026-27.pdf?v=2",
+      "content_hash": "aa79a21f69eda3df1ccf65ca84fa5e890b9d7d016144d60d26f5a2b549a5662c"
+    },
+    {
+      "text": "Letter no: HFWD/0133/07/2024 dated 09/07/2024 Resolution of Disability from Department of Health and Family Welfare, Government of Gujarat [આરોગ્ય અને પરિવાર કલ્યાણ વિભાગ, ગુજરાત સરકાર તરફથી પત્ર નંબર: HFWD/0133/07/2024 તારીખ 09/07/2024 દિવ્યાંગતાનો ઠરાવ]",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/PwD GR  Gujarat  09072024.pdf",
+      "content_hash": "2e18222a56272a1060579c6443e2e45637b13a2449b9a37a169861a5d22fe4fb"
+    },
+    {
+      "text": "Proforma of disability [દિવ્યાંગતાનું પ્રોફોર્મા]",
+      "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/ProformaMedical & Appeal  Board_Case Paper.pdf",
+      "content_hash": "1fa8cc46f29ed93856a924d8af2c1c6e46514904d7cf9c089a8077e398f68759"
+    },
+    {
+      "text": "• GUIDELINES ON ASSESSMENT OF PERSONS WITH BENCHMARK DISABILITIES (PWBD) FOR ADMISSION TO THE POST GRADUATE MEDICAL COURSE, 2026. Dated 16/09/2026",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/REG/GUIDELINES ON ASSESSMENT OF PERSONS WITH BENCHMARK DISABILITIES.pdf",
+      "content_hash": "f2e15a1762ef125e7a49e269c6d53347b61f3328b6d6d5cf46a93a0bac94578e"
+    },
+    {
+      "text": "Result of NEET-PG 2026 Declared",
+      "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/NBEMS_2026619243078.PDF",
+      "content_hash": "b5e9178cf48cdaf6ae48d8394291d01e1e9b582929f5feaade1d1fdb04954d93"
+    },
+    {
+      "text": "16/09/2026 - Guidelines on Assessment of Persons with benchmark Disabilities (PwBD) for admission to the Post Graduate Medical Course, 2026.",
+      "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/20260917090022-pg-final-rpwd-guidleines-compressed.PDF",
+      "content_hash": "f4b4a77ce4667c157390b9ef62ca10202d3cca40ac49f07e5e8980917dc3e28d"
+    },
+    {
+      "text": "Eligibility Criteria & List of Documents Required for Admission Process of ACPUGMEC 2026-27",
+      "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/Eligibility Criteria & List of Documents Required for Admission Process of ACPUGMEC 2026-27.PDF",
+      "content_hash": "a0346cab44b2fd25c4a62071c1822bd9f177180033476bfc071499fc61c62477"
+    },
+    {
+      "text": "Instructions for NRI Candidates 2026-27",
+      "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/Instructions for NRI Candidates 2026-27.PDF",
+      "content_hash": "2bd143216e63c62946686ca3207a669b3a550347006468fa6c17336eecefb145"
+    },
+    {
+      "text": "Click Here PG Rules 201819",
+      "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/PG_Rules_201819.PDF",
+      "content_hash": "df6c9822003b690c47e9375f28ce917d241cf7060e6286f0befa42d2aca12b5d"
+    }
+  ],
+  "last_deep_check": 1790849404
+}
