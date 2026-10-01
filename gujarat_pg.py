@@ -8,7 +8,6 @@ from urllib.parse import urljoin
 
 URL = "https://www.medadmgujarat.org/pg/home.aspx"
 STATE_FILE = "gujarat_state.json"
-DEEP_CHECK_INTERVAL = 600  # 10 minutes
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -121,29 +120,6 @@ def get_updates():
     return updates
 
 
-def pdf_hash(url):
-    try:
-        response = requests.get(
-            url,
-            headers={"User-Agent": "Mozilla/5.0"},
-            timeout=30,
-            stream=True,
-        )
-        response.raise_for_status()
-
-        sha = hashlib.sha256()
-
-        for chunk in response.iter_content(chunk_size=65536):
-            if chunk:
-                sha.update(chunk)
-
-        return sha.hexdigest()
-
-    except requests.RequestException as e:
-        print(f"Could not download PDF for fingerprinting: {e}")
-        return None
-
-
 def send_telegram(message):
     if not BOT_TOKEN or not CHAT_ID:
         print("Telegram credentials not found. Alert not sent.")
@@ -167,7 +143,6 @@ def load_state():
     if not os.path.exists(STATE_FILE):
         return {
             "updates": [],
-            "last_deep_check": 0,
         }
 
     try:
@@ -178,15 +153,13 @@ def load_state():
         if isinstance(data, list):
             return {
                 "updates": data,
-                "last_deep_check": 0,
-            }
+                }
 
         return data
 
     except Exception:
         return {
             "updates": [],
-            "last_deep_check": 0,
         }
 
 
@@ -232,12 +205,6 @@ def main():
         print("Creating baseline. No Telegram alert sent.")
 
         state["updates"] = updates
-        state["last_deep_check"] = int(time.time())
-
-        # Establish PDF fingerprints.
-        for item in state["updates"]:
-            item["content_hash"] = pdf_hash(item["url"])
-
         save_state(state)
         return
 
@@ -253,70 +220,6 @@ def main():
 
         if send_telegram(message):
             print(f"Telegram alert sent for NEW notice: {item['text']}")
-
-    now = int(time.time())
-    last_deep_check = state.get("last_deep_check", 0)
-
-    # Deep-check every 10 minutes.
-    if now - last_deep_check >= DEEP_CHECK_INTERVAL:
-        print("\nRunning PDF and posted-date checks...")
-
-        for item in updates:
-            key = (item["text"], item["url"])
-            old_item = old_by_key.get(key)
-
-            if not old_item:
-                continue
-
-            old_date = old_item.get("posted_at")
-            new_date = item.get("posted_at")
-
-            # Detect the website's posted date/time changing.
-            if old_date and new_date and old_date != new_date:
-                message = (
-                    "🟢 GUJARAT PG ADMISSION UPDATE\n\n"
-                    "🕐 NOTICE DATE/TIME UPDATED\n\n"
-                    f"{item['text']}\n\n"
-                    f"📅 Previous: {old_date}\n"
-                    f"📅 Current: {new_date}\n\n"
-                    f"🔗 {item['url']}"
-                )
-
-                if send_telegram(message):
-                    print(f"Telegram alert sent for DATE change: {item['text']}")
-
-            old_hash = old_item.get("content_hash")
-            new_hash = pdf_hash(item["url"])
-
-            if new_hash is not None and old_hash:
-                if old_hash != new_hash:
-                    message = (
-                        "🟢 GUJARAT PG ADMISSION UPDATE\n\n"
-                        "🔄 UPDATED NOTICE\n\n"
-                        f"{item['text']}\n\n"
-                        f"📅 Posted: {new_date or 'Date not shown'}\n\n"
-                        f"🔗 {item['url']}"
-                    )
-
-                    if send_telegram(message):
-                        print(f"Telegram alert sent for PDF change: {item['text']}")
-
-            if new_hash is not None:
-                item["content_hash"] = new_hash
-            elif old_hash:
-                item["content_hash"] = old_hash
-
-        state["last_deep_check"] = now
-
-    # Preserve existing hashes.
-    for item in updates:
-        key = (item["text"], item["url"])
-
-        if key in old_by_key:
-            old_item = old_by_key[key]
-
-            if "content_hash" in old_item and "content_hash" not in item:
-                item["content_hash"] = old_item["content_hash"]
 
     state["updates"] = updates
     save_state(state)
