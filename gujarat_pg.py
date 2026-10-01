@@ -51,52 +51,72 @@ def get_updates():
     soup = BeautifulSoup(response.text, "html.parser")
     updates = []
 
-    for a in soup.find_all("a", href=True):
-        text = " ".join(a.get_text(" ", strip=True).split())
-        href = urljoin(URL, a["href"])
+    # Each coloured information box contains its own [Date: ...]
+    # and one or more notice/PDF links.
+    for section in soup.find_all(
+        "div",
+        style=lambda value: value and "border:" in value
+    ):
+        section_text = section.get_text(" ", strip=True)
 
-        if not text:
-            continue
+        posted_at = None
+        marker = "[Date:"
+        if marker in section_text:
+            start = section_text.find(marker) + len(marker)
+            end = section_text.find("]", start)
+            if end != -1:
+                posted_at = section_text[start:end].strip()
 
-        href_lower = href.lower()
-        text_lower = text.lower()
+        for a in section.find_all("a", href=True):
+            text = " ".join(a.get_text(" ", strip=True).split())
+            href = urljoin(URL, a["href"])
 
-        if "medadmgujarat.ncode.in" not in href_lower:
-            continue
+            if not text:
+                continue
 
-        ignored_text = [
-            "login",
-            "log-in",
-            "registration",
-            "home",
-            "contact",
-            "about us",
-        ]
+            href_lower = href.lower()
+            text_lower = text.lower()
 
-        if any(word in text_lower for word in ignored_text):
-            continue
+            if "medadmgujarat.ncode.in" not in href_lower:
+                continue
 
-        if any(path in href_lower for path in [
-            "/pg2021/",
-            "/pg2022/",
-            "/pg2023/",
-            "/pg2024/",
-        ]):
-            continue
+            ignored_text = [
+                "login",
+                "log-in",
+                "registration",
+                "home",
+                "contact",
+                "about us",
+            ]
 
-        if "/refund/" in href_lower:
-            continue
+            if any(word in text_lower for word in ignored_text):
+                continue
 
-        if "compiled_closure" in href_lower:
-            continue
+            if any(
+                path in href_lower
+                for path in [
+                    "/pg2021/",
+                    "/pg2022/",
+                    "/pg2023/",
+                    "/pg2024/",
+                ]
+            ):
+                continue
 
-        item = {
-            "text": text,
-            "url": href,
-        }
+            if "/refund/" in href_lower:
+                continue
 
-        if item not in updates:
-            updates.append(item)
+            if "compiled_closure" in href_lower:
+                continue
+
+            item = {
+                "text": text,
+                "url": href,
+                "posted_at": posted_at,
+            }
+
+            if item not in updates:
+                updates.append(item)
 
     return updates
 
@@ -126,8 +146,8 @@ def pdf_hash(url):
 
 def send_telegram(message):
     if not BOT_TOKEN or not CHAT_ID:
-        print("Telegram credentials not found.")
-        return
+        print("Telegram credentials not found. Alert not sent.")
+        return False
 
     response = requests.post(
         f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
@@ -140,6 +160,7 @@ def send_telegram(message):
     )
 
     response.raise_for_status()
+    return True
 
 
 def load_state():
@@ -180,8 +201,7 @@ def main():
 
     updates = get_updates()
 
-    # None means the portal was unavailable.
-    # Never overwrite state in this situation.
+    # Never overwrite state when the portal is unavailable.
     if updates is None:
         return
 
@@ -189,6 +209,7 @@ def main():
 
     for item in updates:
         print(f"- {item['text']}")
+        print(f"  Date: {item.get('posted_at')}")
         print(f"  {item['url']}")
 
     state = load_state()
@@ -212,6 +233,11 @@ def main():
 
         state["updates"] = updates
         state["last_deep_check"] = int(time.time())
+
+        # Establish PDF fingerprints.
+        for item in state["updates"]:
+            item["content_hash"] = pdf_hash(item["url"])
+
         save_state(state)
         return
 
@@ -221,69 +247,79 @@ def main():
             "🟢 GUJARAT PG ADMISSION UPDATE\n\n"
             "🆕 NEW NOTICE\n\n"
             f"{item['text']}\n\n"
+            f"📅 Posted: {item['posted_at'] or 'Date not shown'}\n\n"
             f"🔗 {item['url']}"
         )
 
-        send_telegram(message)
-        print(f"Telegram alert sent for NEW notice: {item['text']}")
+        if send_telegram(message):
+            print(f"Telegram alert sent for NEW notice: {item['text']}")
 
-    # Deep-check existing PDFs every 10 minutes.
     now = int(time.time())
     last_deep_check = state.get("last_deep_check", 0)
 
+    # Deep-check every 10 minutes.
     if now - last_deep_check >= DEEP_CHECK_INTERVAL:
-        print("\nRunning PDF content check...")
+        print("\nRunning PDF and posted-date checks...")
 
         for item in updates:
             key = (item["text"], item["url"])
-
-            # New items have already been handled above.
-            if key in {
-                (x["text"], x["url"])
-                for x in new_updates
-            }:
-                continue
-
             old_item = old_by_key.get(key)
 
             if not old_item:
                 continue
 
-            old_hash = old_item.get("content_hash")
+            old_date = old_item.get("posted_at")
+            new_date = item.get("posted_at")
 
-            new_hash = pdf_hash(item["url"])
-
-            if new_hash is None:
-                continue
-
-            if old_hash and old_hash != new_hash:
+            # Detect the website's posted date/time changing.
+            if old_date and new_date and old_date != new_date:
                 message = (
                     "🟢 GUJARAT PG ADMISSION UPDATE\n\n"
-                    "🔄 UPDATED NOTICE\n\n"
+                    "🕐 NOTICE DATE/TIME UPDATED\n\n"
                     f"{item['text']}\n\n"
+                    f"📅 Previous: {old_date}\n"
+                    f"📅 Current: {new_date}\n\n"
                     f"🔗 {item['url']}"
                 )
 
-                send_telegram(message)
-                print(f"Telegram alert sent for UPDATED notice: {item['text']}")
+                if send_telegram(message):
+                    print(f"Telegram alert sent for DATE change: {item['text']}")
 
-            item["content_hash"] = new_hash
+            old_hash = old_item.get("content_hash")
+            new_hash = pdf_hash(item["url"])
+
+            if new_hash is not None and old_hash:
+                if old_hash != new_hash:
+                    message = (
+                        "🟢 GUJARAT PG ADMISSION UPDATE\n\n"
+                        "🔄 UPDATED NOTICE\n\n"
+                        f"{item['text']}\n\n"
+                        f"📅 Posted: {new_date or 'Date not shown'}\n\n"
+                        f"🔗 {item['url']}"
+                    )
+
+                    if send_telegram(message):
+                        print(f"Telegram alert sent for PDF change: {item['text']}")
+
+            if new_hash is not None:
+                item["content_hash"] = new_hash
+            elif old_hash:
+                item["content_hash"] = old_hash
 
         state["last_deep_check"] = now
 
-    # Preserve hashes for notices that weren't deep-checked this run.
+    # Preserve existing hashes.
     for item in updates:
         key = (item["text"], item["url"])
 
-        if key in old_by_key and "content_hash" in old_by_key[key]:
-            if "content_hash" not in item:
-                item["content_hash"] = old_by_key[key]["content_hash"]
+        if key in old_by_key:
+            old_item = old_by_key[key]
+
+            if "content_hash" in old_item and "content_hash" not in item:
+                item["content_hash"] = old_item["content_hash"]
 
     state["updates"] = updates
     save_state(state)
-
-    if not new_updates:
-        print("\nNo new Gujarat PG updates.")
 
 
 if __name__ == "__main__":
