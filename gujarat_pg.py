@@ -293,3 +293,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    if os.environ.get("TELEGRAM_TEST") == "1":
+        print("\nRunning Telegram delivery test...")
+        send_telegram(
+            "🧪 GUJARAT PG ALERT TEST\n\n"
+            "Testing Telegram delivery from GitHub Actions."
+        )
