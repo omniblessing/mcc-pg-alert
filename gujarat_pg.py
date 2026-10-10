@@ -1,7 +1,7 @@
+
 import os
 import json
 import time
-import hashlib
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
@@ -125,42 +125,65 @@ def send_telegram(message):
         print("Telegram credentials not found. Alert not sent.")
         return False
 
-    response = requests.post(
-        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-        data={
-            "chat_id": CHAT_ID,
-            "text": message,
-            "disable_web_page_preview": False,
-        },
-        timeout=30,
-    )
+    try:
+        response = requests.post(
+            f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+            data={
+                "chat_id": CHAT_ID,
+                "text": message,
+                "disable_web_page_preview": False,
+            },
+            timeout=15,
+        )
 
-    response.raise_for_status()
-    return True
+        response.raise_for_status()
+        result = response.json()
+
+        if result.get("ok") is True:
+            sent_message = result.get("result", {})
+            chat = sent_message.get("chat", {})
+            message_id = sent_message.get("message_id")
+
+            print(
+                f"Telegram accepted message for "
+                f"chat {chat.get('id')}, "
+                f"message ID {message_id}"
+            )
+            return True
+
+        print(
+            f"Telegram rejected message: "
+            f"{result.get('description', 'Unknown error')}"
+        )
+        return False
+
+    except (requests.RequestException, ValueError) as e:
+        print(f"Telegram delivery failed: {e}")
+        return False
 
 
 def load_state():
     if not os.path.exists(STATE_FILE):
-        return {
-            "updates": [],
-        }
+        return {"updates": []}
 
     try:
         with open(STATE_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        # Convert old state format automatically.
         if isinstance(data, list):
-            return {
-                "updates": data,
-                }
+            return {"updates": data}
+
+        if not isinstance(data, dict):
+            return {"updates": []}
+
+        if not isinstance(data.get("updates"), list):
+            return {"updates": []}
 
         return data
 
-    except Exception:
-        return {
-            "updates": [],
-        }
+    except (OSError, ValueError) as e:
+        print(f"Could not load Gujarat state: {e}")
+        return {"updates": []}
 
 
 def save_state(state):
@@ -176,6 +199,11 @@ def main():
 
     # Never overwrite state when the portal is unavailable.
     if updates is None:
+        return
+
+    # Avoid overwriting state if parsing unexpectedly finds nothing.
+    if not updates:
+        print("No Gujarat notices found. Preserving previous state.")
         return
 
     print(f"\nFound {len(updates)} relevant Gujarat PG updates:\n")
@@ -208,21 +236,59 @@ def main():
         save_state(state)
         return
 
-    # Alert immediately for newly appearing notices.
+    # Keep all previously confirmed notices.
+    # Add new notices only after Telegram accepts the message.
+    confirmed_by_key = dict(old_by_key)
+
     for item in new_updates:
         message = (
             "🟢 GUJARAT PG ADMISSION UPDATE\n\n"
             "🆕 NEW NOTICE\n\n"
             f"{item['text']}\n\n"
-            f"📅 Posted: {item['posted_at'] or 'Date not shown'}\n\n"
+            f"📅 Posted: {item.get('posted_at') or 'Date not shown'}\n\n"
             f"🔗 {item['url']}"
         )
 
         if send_telegram(message):
-            print(f"Telegram alert sent for NEW notice: {item['text']}")
+            print(
+                f"Telegram alert sent for NEW notice: "
+                f"{item['text']}"
+            )
+            confirmed_by_key[(item["text"], item["url"])] = item
+        else:
+            print(
+                f"Telegram alert NOT confirmed for: "
+                f"{item['text']}. Will retry on next run."
+            )
 
-    state["updates"] = updates
-    save_state(state)
+    # Refresh notices that are still visible and confirmed,
+    # without recording notices whose Telegram alerts failed.
+    confirmed_updates = [
+        item
+        for item in updates
+        if (item["text"], item["url"]) in confirmed_by_key
+    ]
+
+    # Retain previously confirmed notices even if they
+    # temporarily disappear from the website.
+    current_keys = {
+        (item["text"], item["url"])
+        for item in confirmed_updates
+    }
+
+    for old_item in old_updates:
+        key = (old_item.get("text"), old_item.get("url"))
+        if key not in current_keys:
+            confirmed_updates.append(old_item)
+            current_keys.add(key)
+
+    state["updates"] = confirmed_updates
+
+    if state["updates"] != old_updates:
+        save_state(state)
+        print("Gujarat notification state updated.")
+    else:
+        print("No Gujarat state change.")
 
 
 if __name__ == "__main__":
