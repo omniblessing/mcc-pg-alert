@@ -2,6 +2,11 @@ name: MCC PG Notification Monitor
 
 on:
   workflow_dispatch:
+    inputs:
+      send_test_notification:
+        description: 'Send one Telegram test message (manual runs only)'
+        type: boolean
+        default: false
 
 concurrency:
   group: mcc-pg-monitor
@@ -38,6 +43,14 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_TEST: ${{ vars.TELEGRAM_TEST }}
         run: python gujarat_pg.py
+
+      - name: Send manual Telegram test
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.send_test_notification == true }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -c "from gujarat_pg import send_telegram; import sys; sys.exit(0 if send_telegram('🧪 GUJARAT PG ALERT TEST\\n\\nManual GitHub Actions delivery test.') else 1)"
 
       - name: Save notification state
         run: |
