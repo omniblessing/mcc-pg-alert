@@ -3,6 +3,10 @@ name: MCC PG Notification Monitor
 on:
   workflow_dispatch:
 
+concurrency:
+  group: mcc-pg-monitor
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
