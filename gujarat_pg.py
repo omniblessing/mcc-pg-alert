@@ -221,9 +221,20 @@ def main():
         for item in old_updates
     }
 
+    # Match repeated notices even when the portal changes the PDF path.
+    # Different publication times still produce separate alerts.
+    def notice_identity(item):
+        title = " ".join((item.get("text") or "").split()).casefold()
+        posted = " ".join((item.get("posted_at") or "").split()).casefold()
+        return (title, posted) if title and posted else None
+
+    known_identities = {
+        notice_identity(item) for item in old_updates
+        if notice_identity(item) is not None
+    }
+
     new_updates = [
-        item
-        for item in updates
+        item for item in updates
         if (item["text"], item["url"]) not in old_by_key
     ]
 
@@ -241,6 +252,12 @@ def main():
     confirmed_by_key = dict(old_by_key)
 
     for item in new_updates:
+        identity = notice_identity(item)
+        if identity is not None and identity in known_identities:
+            print(f"Skipping duplicate notice with changed link: {item['text']}")
+            confirmed_by_key[(item["text"], item["url"])] = item
+            continue
+
         message = (
             "🟢 GUJARAT PG ADMISSION UPDATE\n\n"
             "🆕 NEW NOTICE\n\n"
@@ -255,6 +272,8 @@ def main():
                 f"{item['text']}"
             )
             confirmed_by_key[(item["text"], item["url"])] = item
+            if identity is not None:
+                known_identities.add(identity)
         else:
             print(
                 f"Telegram alert NOT confirmed for: "
