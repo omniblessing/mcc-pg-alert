@@ -4,6 +4,20 @@
     "New Registration for NEET PG Counselling 2026 has been started.",
     "The Primary Assessment Board will be available until 15.10.2026, and the Appellate Board will be available until 18.10.2026."
   ],
-  "current_events": [],
-  "news_events": []
+  "current_events": [
+    {
+      "text": "Public Notice for eligibility of NRI candidature for Academic Year 2026-27",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/05/2026052710250622.pdf"
+    }
+  ],
+  "news_events": [
+    {
+      "text": "Notice for PwD assessment for PG Round 1 2026",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/09/202609291035233397.pdf"
+    },
+    {
+      "text": "Final Guidelines with respect to Persons with Benchmark Disabilities (PwBD) for Post Graduate Medical Courses received from NMC dated 16.09.2026",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/09/20260917634917816.pdf"
+    }
+  ]
 }
