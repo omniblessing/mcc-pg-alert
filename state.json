@@ -1,43 +1,9 @@
 {
   "latest_news": [
-    "The verification of seats of some colleges is under process at the institute level. They will be available for choice filling from 15.10.2026.",
+    "The seat matrix from NMC and NBEMS is awaited for commencement of PG Counselling 2026.",
     "New Registration for NEET PG Counselling 2026 has been started.",
     "The Primary Assessment Board will be available until 15.10.2026, and the Appellate Board will be available until 18.10.2026."
   ],
-  "current_events": [
-    {
-      "text": "DEEMED SEATS MATRIX PG COUNSELLING 2026 (MD/MS)",
-      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/10/20261014694101458.pdf"
-    },
-    {
-      "text": "CENTRAL INTERNAL QUOTA SEATS MATRIX PG COUNSELLING 2026 (MD/MS)",
-      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/10/20261014504539225.pdf"
-    },
-    {
-      "text": "ALL INDIA QUOTA SEATS MATRIX PG COUNSELLING 2026 (MD/MS)",
-      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/10/20261014935027152.pdf"
-    },
-    {
-      "text": "FINAL SEATS MATRIX DNB PG COUNSELLING 2026",
-      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/10/202610142075182543.pdf"
-    },
-    {
-      "text": "Public Notice for eligibility of NRI candidature for Academic Year 2026-27",
-      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/05/2026052710250622.pdf"
-    }
-  ],
-  "news_events": [
-    {
-      "text": "Corrigendum regarding NRI documents to be submitted.",
-      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/10/20261014112252837.pdf"
-    },
-    {
-      "text": "Notice for PwD assessment for PG Round 1 2026",
-      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/09/202609291035233397.pdf"
-    },
-    {
-      "text": "Final Guidelines with respect to Persons with Benchmark Disabilities (PwBD) for Post Graduate Medical Courses received from NMC dated 16.09.2026",
-      "url": "https://cdnbbsr.s3waas.gov.in/s3e0f7a4d0ef9b84b83b693bbf3feb8e6e/uploads/2026/09/20260917634917816.pdf"
-    }
-  ]
+  "current_events": [],
+  "news_events": []
 }
