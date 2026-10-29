@@ -1,0 +1,53 @@
+name: Maharashtra NEET PG Notices
+on:
+  schedule:
+    - cron: '3-59/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      send_test:
+        description: Send a Telegram delivery test
+        type: boolean
+        default: false
+  push:
+    paths:
+      - maharashtra_pg.py
+      - .github/workflows/maharashtra.yml
+permissions:
+  contents: write
+concurrency:
+  group: maharashtra-pg-notices
+  cancel-in-progress: false
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check notices
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python maharashtra_pg.py
+      - name: Test Telegram delivery
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.send_test)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python maharashtra_pg.py --test
+      - name: Save delivered notices
+        if: always()
+        run: |
+          git config user.name 'Maharashtra Notice Bot'
+          git config user.email 'maharashtra-notice-bot@users.noreply.github.com'
+          git add maharashtra_state.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Remember delivered Maharashtra PG notices'
+            for attempt in 1 2 3; do
+              git pull --rebase origin main && git push origin HEAD:main && exit 0
+              sleep 2
+            done
+            exit 1
+          fi
