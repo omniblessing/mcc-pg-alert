@@ -1,0 +1,53 @@
+name: MCC and Gujarat PG Health Test
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/pg-health-test.yml
+permissions:
+  contents: read
+jobs:
+  test:
+    name: Test ${{ matrix.portal }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    strategy:
+      fail-fast: false
+      matrix:
+        portal: [MCC, Gujarat]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4
+      - name: Check live notices and send labelled Telegram test
+        env:
+          PORTAL: ${{ matrix.portal }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python - <<'PY'
+          import os
+          from maharashtra_pg import send_telegram
+          portal = os.environ["PORTAL"]
+          try:
+              if portal == "MCC":
+                  import monitor
+                  snapshot = monitor.build_snapshot(monitor.get_page())
+                  counts = {key: len(items) for key, items in snapshot.items()}
+                  if not all(counts.values()):
+                      raise RuntimeError("One or more MCC notice sections are empty: " + str(counts))
+                  detail = "\n".join(f"{key}: {count}" for key, count in counts.items())
+              else:
+                  import gujarat_pg
+                  updates = gujarat_pg.get_updates()
+                  if not updates:
+                      raise RuntimeError("Gujarat portal unavailable or no notices parsed")
+                  detail = f"Relevant notices found: {len(updates)}"
+          except Exception:
+              send_telegram(f"{portal} PG TEST: WEBSITE CHECK FAILED\n\nTelegram delivery works, but the live notice check failed. See GitHub Actions logs.")
+              raise
+          send_telegram(f"{portal} PG TEST PASSED\n\nLive website fetched and notices parsed successfully.\n{detail}\n\nTelegram delivery test from GitHub Actions. This is a test, not a new notice.")
+          print(f"{portal}: live notice extraction and Telegram delivery both passed.")
+          PY
