@@ -1,16 +1,6 @@
 {
   "updates": [
     {
-      "text": "Procedure For Admission Cancellation",
-      "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/Admission Cancellation - Procedure.pdf",
-      "posted_at": null
-    },
-    {
-      "text": "Revised AIQ and State NEET_PG_2026 Admission process Schedule_Dated 16_11_2026",
-      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/Updated AIQ and State NEET_PG_2026 Admission process Schedule_Dated 16_11_2026.pdf",
-      "posted_at": null
-    },
-    {
       "text": "Click here for Reservation rule for In-service candidate of Government of Gujarat",
       "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R1/PG Gazette 2023.pdf",
       "posted_at": null
@@ -22,7 +12,7 @@
     },
     {
       "text": "Provisional General Merit List",
-      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/merit_mdms_gen_r2.pdf",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/merit_mdms_gen_r2.1.pdf",
       "posted_at": null
     },
     {
@@ -46,7 +36,7 @@
       "posted_at": null
     },
     {
-      "text": "Provisional General In Service Merit List (Updated on 18-11-2026)",
+      "text": "Provisional General In Service Merit List",
       "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/merit_mdms_inservice_op_r2.pdf",
       "posted_at": null
     },
@@ -56,13 +46,48 @@
       "posted_at": null
     },
     {
-      "text": "Provisional SEBC In Service Merit List (Updated on 18-11-2026)",
+      "text": "Provisional SEBC In Service Merit List",
       "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/merit_mdms_inservice_se_r2.pdf",
+      "posted_at": null
+    },
+    {
+      "text": "Provisional NRI Merit List",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/merit_nri_r2.pdf",
+      "posted_at": null
+    },
+    {
+      "text": "Status of NRI Applications",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/NRI Report - Round 2.pdf",
       "posted_at": null
     },
     {
       "text": "Not Eligible Candidate List",
       "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/DQ CANDIDATE LIST r2.pdf",
+      "posted_at": null
+    },
+    {
+      "text": "Procedure For Admission Cancellation",
+      "url": "https://medadmgujarat.ncode.in/web/PG2026/MDMS/Admission Cancellation - Procedure.pdf",
+      "posted_at": null
+    },
+    {
+      "text": "Revised AIQ and State NEET_PG_2026 Admission process Schedule_Dated 16_11_2026",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/Updated AIQ and State NEET_PG_2026 Admission process Schedule_Dated 16_11_2026.pdf",
+      "posted_at": null
+    },
+    {
+      "text": "Provisional General Merit List",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/merit_mdms_gen_r2.pdf",
+      "posted_at": null
+    },
+    {
+      "text": "Provisional General In Service Merit List (Updated on 18-11-2026)",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/merit_mdms_inservice_op_r2.pdf",
+      "posted_at": null
+    },
+    {
+      "text": "Provisional SEBC In Service Merit List (Updated on 18-11-2026)",
+      "url": "http://medadmgujarat.ncode.in/web/PG2026/MDMS/MERIT/R2/merit_mdms_inservice_se_r2.pdf",
       "posted_at": null
     },
     {
